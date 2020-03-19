@@ -12,7 +12,7 @@ use std::collections::HashMap;
 use std::env;
 use std::path::PathBuf;
 
-const POPPLER_GLIB_VERSION: &'static str = "0.76.0";
+const POPPLER_GLIB_VERSION: &'static str = "0.41.0";
 const BINDINGS_VENDOR_DIR: &'static str = "build/vendored_bindings";
 
 #[derive(Hash, Eq, PartialEq, Clone, Display)]
@@ -141,7 +141,7 @@ fn gen(mut builder: bindgen::Builder, module: Modules) {
         .header(format!("build/header_wrappers/{}_wrp.h", module))
         .generate()
         .expect(&format!("Unable to generate bindings for {}", module));
-    
+
 
     let file_name = format!("bindings_{}.rs", module);
 
@@ -151,7 +151,7 @@ fn gen(mut builder: bindgen::Builder, module: Modules) {
     binding
         .write_to_file(out_path)
         .expect(&format!("Couldn't write bindings for {}.", module));
-    
+
     // also writes it into the binding vendoring directory
     let vend_dir = BINDINGS_VENDOR_DIR;
     let vend_path = PathBuf::from(&vend_dir).join(file_name);
@@ -168,7 +168,7 @@ lazy_static! {
         .atleast_version(POPPLER_GLIB_VERSION)
         .probe("poppler-glib")
         .expect("pkg-config could not find poppler");
-       
+
     static ref WHITELIST_TYPES: HashMap<Modules, Vec<&'static str>> = {
         let mut m = HashMap::new();
         m.insert(
