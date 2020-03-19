@@ -14,7 +14,10 @@ where
     let return_value = f(&mut err as *mut *mut GError);
 
     if return_value.is_null() {
-        Err(glib::error::Error::wrap(err))
+        Err(glib::error::Error::new(
+            glib::FileError::Inval,
+            "Path invalid (contains NUL characters)",
+        ))
     } else {
         Ok(return_value)
     }
